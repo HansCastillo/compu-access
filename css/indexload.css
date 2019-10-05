@@ -1,0 +1,34 @@
+.load{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background-color:white;
+    z-index:1;      
+
+    display:flex;
+    align-items: center;
+    justify-content: center;    
+}   
+.postload{
+    z-index:-2;
+    opacity:0;
+    transition:1s;
+}
+.iconocarga{        
+    animation-name:animacion;
+    animation-duration:0.5s;
+    animation-iteration-count:infinite;
+    animation-timing-function:linear;
+    
+    border:7px solid white;    
+    border-left-color:rgb(103, 103, 255);
+    border-right-color:rgb(216, 212, 255);
+    border-radius: 50px;
+    width:50px;
+    height:50px;
+}
+@keyframes animacion{
+    100%{
+        transform:rotate(360deg);            
+    }
+}

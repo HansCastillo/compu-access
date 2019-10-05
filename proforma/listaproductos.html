@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Productos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/barra_menu.css" />
+    <script src="main.js"></script>
+    <style>                
+        
+        *{padding:0;margin:0;box-sizing: border-box;}
+        *{font-family: "Helvetica Neue","Segoe UI",Lucida,Noto,Roboto,Arial,sans-serif;}
+        #btnPrint{
+            padding:5px 10px;
+            margin:10px;
+            border:black 1px solid;
+            cursor: pointer;            
+            box-shadow: 0px 0px 5px  rgb(114, 112, 255);
+        }
+        #btnPrint:hover{
+            background: black;
+            color:white;
+            transition:0.5s;
+            box-shadow: 0px 0px 5px  black;
+        }
+        #filtro{
+            width:220px;
+            margin:10px 0px 0px 50px;
+            padding:5px 0px 5px 30px;            
+            border-radius: 10px;
+            background-image:url('Search.png');
+            border:1px solid grey;            
+            background-size:20px;
+            background-repeat: no-repeat;
+            background-position: 5px 4px;  
+        }
+        #cliente{
+            position:absolute;
+            right: 20px;
+            padding:5px 10px;
+            width: 300px;
+            margin:10px
+        }
+
+
+        #contenedor{
+            display:grid;
+            grid-template-columns: 60% 40%;
+        }
+        #subcontenedor1{            
+            display:grid;
+            grid-template-columns: repeat(3,180px);
+            grid-auto-rows: 280px;    
+            justify-content: space-evenly ;            
+            
+            font-size: 12px;
+            height:300px;       /*el alto sera modicado al CARGAR la pagina*/
+            overflow-y:scroll;
+        }
+        #subcontenedor1 .item{            
+            border:1px solid rgb(200, 200, 200);
+            border-radius: 5px;
+            margin-top:10px;
+            background:rgb(231, 231, 231);
+            cursor:pointer;
+        }
+        #subcontenedor1 .imagen{
+            border-radius: 5px 5px 0 0;
+            width:178px;
+            height: 170px;
+        }
+        #subcontenedor1 .codigo{
+            margin:auto;
+            text-align:center;
+            padding:7px;
+        }
+        #subcontenedor1 .nombre{
+            padding:0 7px;
+        }
+        #subcontenedor1 .precio{
+            
+            margin:auto;
+            text-align:center;
+            padding:7px;
+            color:rgb(223, 0, 0);
+            font-weight: 700;
+            font-size: 16px;
+        }
+        #subcontenedor2{
+            font-size:12px;  
+            height:300px;       /*el alto sera modicado al cargar la pagina*/
+            overflow-y:scroll;        
+        } 
+        #subcontenedor2 #tabla1{
+            width: 95%;
+            margin:10px 0px 0px 10px;
+            border-collapse: collapse;
+        }
+        #subcontenedor2 #tabla1 tr:nth-child(odd){
+            background-color: rgb(236, 236, 236);
+        }
+        #subcontenedor2 #tabla1 th{
+            background-color: rgb(63, 63, 63); 
+            color:white;
+        }
+        #subcontenedor2 #tabla1 td,th{
+            padding:4px;                        
+        }
+        #subcontenedor2 #tabla1 td .botonx{
+            padding:2px 5px;
+            background: rgb(143, 0, 0);
+            color:white;
+            border-radius: 5px;
+            cursor:pointer;
+        }
+        #subcontenedor2 #tabla2{
+            margin:10px auto;  
+        }
+        #subcontenedor2 #tabla2 td{
+            padding:4px;
+        }        
+        #subcontenedor2 #tabla2 td:nth-child(1){
+            background-color:rgb(66, 66, 66);
+            color:white;
+        }
+        @media screen and (max-width:480px){	  
+		    #contenedor{
+                grid-template-columns: 100%;               
+            }  
+            #subcontenedor1{
+                grid-template-columns:180px;                                   
+            }
+            #cliente{  
+                position:relative;        
+                left: 0px;
+                width: 90%;            
+            }
+	    }
+       
+    </style>
+</head>
+<body>
+    <div class='contenedor-menu'>        
+        <div id="e1"><a href="../menu/menu.php">Menu</a></div>        
+        <div id="e3"><a href="../session_conexion/cerrar_session.php">SALIR</a></div>
+    </div>
+    <input type="text" name="producto" id="filtro" onkeyup="evento(this)">
+    <button id='btnPrint' onclick="imprimir()">IMPRIMIR</button>
+    <input type="text" name="producto" id="cliente" onkeyup="" placeholder="Nombre del Cliente">
+    <div id="contenedor">
+        <div id="subcontenedor1">        
+        </div>
+        <div id="subcontenedor2">        
+                <table id="tabla1">
+                    <tr><th>Codigo</th><th>Nombre</th><th>Precio</th><th>Cant</th><th>SubTotal</th></tr>
+                </table>
+                <table id="tabla2">
+                    <tr><td>TOTAL</td><td>0</td></tr>                    
+                </table>                            
+        </div>    
+    </div>
+    <script>          
+        busqueda("");
+        function evento(ele){
+            busqueda(ele.value);
+        };           
+        function busqueda(value){
+            let resultado;
+            let objetoRequest=new XMLHttpRequest();
+            objetoRequest.open("GET","productos.php?val="+value,true);            
+            objetoRequest.responseType="text";            
+            objetoRequest.onload=function(){                 
+                crearItems(JSON.parse(this.response));
+            };
+            objetoRequest.send();  
+        }
+        function crearItems(resp){  
+            subcontenedor1.innerHTML="";            
+            for(let fila of resp){            
+                let item=
+                "<div class='item' onclick='agregarAlCarro(this)'>"+
+                    "<img src='' class='imagen' alt='itemx'>"+ 
+                    "<div class='codigo'>"+fila['codigo']+"</div>"+        
+                    "<div class='nombre'>"+fila['nombre']+"</div>"+    
+                    "<div class='precio'>S./ <span>"+fila['precio']+"</span></div>"+            
+                "</div>";                
+                subcontenedor1.insertAdjacentHTML("beforeend",item)
+            }                           
+            insertarImagenes();
+        }         
+        function insertarImagenes(){                        
+            let elementosCod=document.getElementsByClassName("codigo");            
+            let elementosImg=document.getElementsByClassName("imagen");            
+
+            for(let i=0;i<elementosCod.length;i++){               
+                let objetoRequest=new XMLHttpRequest();                
+                objetoRequest.open("GET","imagenes.php?img="+elementosCod[i].innerHTML,true);
+                objetoRequest.responseType="blob";            
+                objetoRequest.onload=function(){                              
+                
+                    let urlCreator=window.URL||window.webkitURL;
+                    let imagenURL=urlCreator.createObjectURL(this.response);                                        
+                    elementosImg[i].src=imagenURL;             
+                };
+                objetoRequest.send(); 
+
+            }
+        }        
+        subcontenedor1.style.height=document.documentElement.clientHeight-126+"px";             
+        subcontenedor2.style.height=document.documentElement.clientHeight-126+"px";                   
+    </script> 
+
+    <script>
+        function agregarAlCarro(item){            
+            let campos=item.children;            
+            let fila=tabla1.insertRow();
+            fila.insertCell().innerHTML=campos[1].innerHTML;
+            fila.insertCell().innerHTML=campos[2].innerHTML;
+            fila.insertCell().innerHTML=campos[3].firstElementChild.innerHTML;
+            fila.insertCell().innerHTML='<select id="ListaNumero" onchange="calcularSubTotal(this)">'+
+	                '<option value="1" label="1">'+
+	                '<option value="2" label="2">'+
+                    '<option value="3" label="3">'+
+	                '<option value="4" label="4">'+
+                    '<option value="5" label="5">'+        
+                    '<option value="5" label="6">'+        
+                '</select>';
+            fila.insertCell().innerHTML=campos[3].firstElementChild.innerHTML;               
+            fila.insertCell().innerHTML="<div class='botonx' onclick='eliminarFila(this)'>x</div>";                 
+            tabla2.rows[0].cells[1].innerHTML=calcularTotal();
+        }
+        function calcularSubTotal(elemento){
+            let celdas=elemento.parentNode.parentNode.cells;
+            let subtotal=celdas[2].innerHTML*celdas[3].firstElementChild.value;
+            celdas[4].innerHTML=subtotal;            
+            tabla2.rows[0].cells[1].innerHTML=calcularTotal();
+        }
+        function calcularTotal(){
+            let filas=tabla1.rows;
+            let total=0;                                    
+            for(let f=1;f<filas.length;f++){                
+                total+=parseFloat(filas[f].cells[4].innerHTML);
+            }
+            return total;
+        }
+        function eliminarFila(ele){
+            ele.parentNode.parentNode.remove();
+            tabla2.rows[0].cells[1].innerHTML=calcularTotal();
+        }
+    </script>
+    <script>  
+        var datos1;      
+        var datos2;
+        var datos3;
+
+        function imprimir(){                        
+            let ancho=screen.width/2;                                    
+            let params = "width=800,height=800,top=100,left="+(ancho-400);
+            let nuevaVentana=window.open("dis_proforma.html",'test',params);                       
+            nuevaVentana.onload=function(){
+                //
+            };            
+            datos1=getDatosTabla1();            
+            datos2=tabla2.rows[0].cells[1].innerHTML;
+            datos3=cliente.value;             
+        }
+        function getDatosTabla1(){
+            let datosTabla1=[];
+            let filas=tabla1.rows;
+            for(let i=1;i<filas.length;i++){
+                let afilas=[];                                
+                afilas.push(filas[i].cells[0].innerHTML);
+                afilas.push(filas[i].cells[1].innerHTML);
+                afilas.push(filas[i].cells[2].innerHTML);
+                afilas.push(filas[i].cells[3].firstElementChild.value);
+                afilas.push(filas[i].cells[4].innerHTML);                
+                datosTabla1.push(afilas);
+            }
+            return datosTabla1;
+        }       
+    </script>
+</body>
+</html>

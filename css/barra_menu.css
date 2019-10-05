@@ -1,0 +1,67 @@
+*{padding:0;margin:0;box-sizing: border-box;font-family: 'Dosis', sans-serif;}
+.contenedor-menu{
+    display:grid;
+    grid-template-columns: repeat(7,1fr);
+    grid-template-rows: 70px; 
+
+    background:rgb(80, 80, 80);
+}
+.contenedor-menu>div{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+    border:2px solid rgb(53, 53, 53);
+}
+.contenedor-menu>div>a{
+    text-decoration:none;
+    color:white;
+}
+
+/*-------------------------------------*/
+.contenedor-barra-usuario{
+    display:grid;
+    grid-template-columns:200px 80px 80px;
+    grid-template-rows:80px;
+    justify-content: right;
+
+    width:100%;
+    height:80px;
+    color:white;
+    background:linear-gradient(rgb(104, 104, 104) ,rgb(46, 46, 46));
+    /*background-color:rgb(46, 46, 46);*/
+    box-shadow: 2px 2px 2px grey ;
+}
+.centrar{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+#enlace_salir>img{
+    width: 50px;
+    height:50px;
+    filter:grayscale(100%);	
+    transition: 0.5s;
+}
+#enlace_salir:hover>img{    
+    filter:grayscale(0%);	
+}
+.imagen-usuario{
+    width:60px;
+    height:60px;    
+    border-radius: 100px;    
+    overflow: hidden;
+}
+.imagen-usuario img{
+    width:80px;
+    height:auto;    
+    transform:translate(-10px,-15px);
+    /*
+        el marco .imagen-usario es de 60x60 
+        la imagen dentro se ve muy reducido, asi que se agrando el ancho a 80 
+        (el alto queda proporcional), en ese caso el ancho sobresale solo del lado 
+        derecho con respecto al marco, asi q con translate se le posiciona 
+        a la izquierda -10   
+    */
+}

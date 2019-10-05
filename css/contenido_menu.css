@@ -1,0 +1,47 @@
+
+.contenido {   
+    margin-top: 20px;    
+    width:100%;
+}
+.contenido > .list{
+    position: relative;
+    height: 50px;    
+    width:40%;
+    min-width:200px;    
+    background-color:rgb(233, 233, 233); 
+    border:1px solid grey;
+    transition:0.5s;
+}
+.contenido > .list:hover{    
+    background-color: rgb(32, 104, 163);
+    width:45%;
+    min-width:220px;
+    transform:translate(5%,0px);    
+}
+/*-------------------------------------------------*/
+.contenido> .list a{
+    text-decoration:none;    
+    color:rgb(75, 75, 75);
+    transition: 0.5s;
+}
+.contenido> list:hover a{
+    color: gainsboro;   
+}
+/*-------------------------------------------------*/
+.rombo{
+    background:rgb(233, 233, 233); 
+    width:0px;
+    height:0px;
+    position: absolute;
+    right: 0px;
+    transform: rotate(45deg);      
+    transition:0.5s;
+}
+.contenido> .list:hover .rombo{    
+    width:35.35px;
+    height:35.35px;    
+    right: -18.68px;    
+}
+.contenido> .list:hover .rombo{        
+    background: rgb(32, 104, 163);    
+}

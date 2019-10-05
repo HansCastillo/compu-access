@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+    <style>
+        *{padding:0;margin:0;box-sizing: border-box;font-size:12px;}
+        *{font-family: "Helvetica Neue","Segoe UI",Lucida,Noto,Roboto,Arial,sans-serif;}
+        #lista{
+            border-collapse: collapse;
+        }        
+        #lista th{            
+            background-color:rgb(212, 212, 212);            
+        }
+        #lista td,th{
+            padding:5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="titulo"><h4>PROFORMA</h4></div>
+    <div id="cliente"></div>    
+    <table id="lista">
+        <tr><th>Codigo</th><th>Nombre</th><th>Precio</th><th>Cant</th><th>SubTotal</th></tr>           
+    </table>
+    <table id="t">        
+        <tr><th>TOTAL</th><td id=total></td></tr>
+    </table>
+
+    <script>
+        let productos=window.opener.datos1;
+        let sumaTotal=window.opener.datos2;        
+        let clte=window.opener.datos3;
+
+        total.innerHTML=sumaTotal;
+        insertarFilas(lista,productos);
+        cliente.innerHTML="Cliente: "+clte;
+        print();
+
+        function insertarFilas(tabla,registros){
+            for(let row of registros){                
+                let fila=tabla.insertRow();                
+                for(let cell of row){                    
+                    fila.insertCell().innerHTML=cell;
+                }
+            }
+        }    
+    </script>
+</body>
+    
+</html>

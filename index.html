@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Inicio</title> 
+    <link href="https://fonts.googleapis.com/css?family=Dosis:300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/estiloindex.css" />  
+    <link rel="stylesheet" type="text/css" media="screen" href="css/indexload.css" />          
+        
+</head>
+<body>  
+    <div class="load">
+        <div class="iconocarga"></div>
+    </div>
+    <div class="fondo"></div>    
+    <img class="logo" src="imagenes/LOGO.png" alt="CompuAccess"><BR>    
+    <div id="contenedorx" class="centrar">
+        <form class="contenedor"action="indice_session_conexion/index_verif.php" method="post" >        
+            <div class="centrar" id="titulo"><strong>LOGIN</strong></div>
+            <div     class="centrar">Usuario</div>
+            <input class="centrar ingreso"type="text" name="usu" id="usu" value="david" required>            
+            <div class="centrar">Password</div>
+            <input class="centrar ingreso" type="password" name="pass" id="pass" value="123" required> 
+            <div class="centrar botonEnviar ingreso" name="submit" id="submit1" ><strong>INGRESAR</strong></div>
+            <div class=""></div>
+            <div class="centrar">
+                <a href="https://www.youtube.com"><img id="face" class="icono" src="imagenes/youtubeicon.png" alt="you"></a>
+                <a href="https://web.facebook.com"><img class="icono" src="imagenes/faceicon.png" alt="face"></a>
+            </div> 
+        </form>        
+    </div>
+    
+    <script>                
+    
+            function manipularRespuesta(){
+                let respuesta = this.response.trim();                
+                if( respuesta == "identificado") {                    
+                    window.location.href = "menu/menu.php";                    
+                }
+                else if( respuesta == "desconocido"){   
+                   alert("Usuario no registrado");   
+                }
+                else if( respuesta == "incorrecto_pass"){
+                    alert("contraseña incorrecta");   
+                }
+                else{
+                    alert("error");   
+                } 
+            }
+            function verificarUsuario(){
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "session_conexion/index_verif.php"); 
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                //xhr.responseType = "text";
+                xhr.onload = manipularRespuesta;
+                xhr.send("usu="+usu.value+"&pas="+pass.value);        
+            }
+            
+            class cargaInicial{                    
+                constructor(ele){
+                    this.ele=ele;                    
+                }
+                handleEvent(event){
+                    this.ele.classList.toggle("postload");
+                    setTimeout(function(){
+                        this.ele.innerHTML="";    
+                    },1000);                    
+                }
+            }
+
+        let elementPreload=document.getElementsByClassName("load")[0];            
+        let iconoLoad = new cargaInicial(elementPreload);            
+        document.addEventListener("DOMContentLoaded", iconoLoad, false);
+        /*face.addEventListener("load", iconoLoad, false);*/
+        submit1.onclick=verificarUsuario;    
+
+    </script>
+</body>
+</html>
